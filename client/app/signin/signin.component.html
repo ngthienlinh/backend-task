@@ -1,1 +1,18 @@
-<p>signin works!</p>
+<div class="d-flex justify-content-center align-items-center mt-5">
+    <form class="d-inline-block mx-auto p-4 shadow rounded" id="frmLogin">
+        <h4 class="text-center">Login</h4>
+        <div class="form-group">
+            <label for="userId">Email</label>
+            <input type="text" name="userId" id="userId" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" class="form-control" />
+        </div>
+
+        <div class="text-center mt-3">
+            <a class="btn btn-primary mx-auto" href="/signup" type="button">Register</a>
+            <button class="btn btn-primary mx-auto" onclick="logUserIn()" type="button">Login</button>
+        </div>
+    </form>
+</div>

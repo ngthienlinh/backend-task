@@ -1,0 +1,21 @@
+{
+  "git.ignoreLimitWarning": true,
+  "eslint.run": "onType",
+  "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": "active",
+  "editor.guides.bracketPairsHorizontal": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "eslint.validate": [
+    "javascript",
+    "typescript"
+  ],
+  "editor.tabSize": 2,
+  "[html]": {
+    "editor.tabSize": 4
+  },
+  "html.format.wrapLineLength": 0,
+  "html.format.wrapAttributes": "preserve",
+  "editor.formatOnSave": true
+}
