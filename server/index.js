@@ -64,6 +64,7 @@ app.use(express.static(path.join(root, 'client/dist'), {
   }
 }))
 
+// Serve html client
 app.get('*', (req, res) => {
   res.sendFile(path.join(root, '/client/dist/index.html'));
 })
