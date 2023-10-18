@@ -13,6 +13,7 @@ delete cspDefaults['upgrade-insecure-requests'];
 cspDefaults['script-src'] = ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net", "https://code.jquery.com"]
 cspDefaults['script-src-attr'] = ["'unsafe-inline'"]
 
+// Basic secure for server
 app.use(helmet({
     contentSecurityPolicy: {
         useDefaults: false,
@@ -20,13 +21,15 @@ app.use(helmet({
     }
 }))
 
+// Compress response bodies
 app.use(compression())
+
+// Parse request body
 app.use(bodyParser.urlencoded({
     limit: '500kb',
     extended: true,
     parameterLimit: 2000
 }))
-
 app.use(bodyParser.json({ limit: '500kb' }));
 app.use(bodyParser.text({ type: "text/plain" }));
 
@@ -47,11 +50,12 @@ app.use(session({
     cookie: { secure: true }
 }))
 
+// Serve static data in app folder
 app.use(express.static('app'))
 
 app.use('/auth', require('./src/auth'))
 
-// authenticate all routes after /auth
+// Authenticate all routes after /auth
 app.use(passport.session())
 
 require('./src/routes')(app)
