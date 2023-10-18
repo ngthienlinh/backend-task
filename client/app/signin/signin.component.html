@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-center align-items-center mt-5">
-    <form class="d-inline-block mx-auto p-4 shadow rounded" id="frmReg">
+    <form class="d-inline-block mx-auto p-4 shadow rounded" id="frmReg" (ngSubmit)="logUserIn">
         <h4 class="text-center">Login</h4>
         <div class="form-group">
             <label for="userId">Email</label>
@@ -12,7 +12,7 @@
 
         <div class="text-center mt-3 d-flex justify-content-center gap-xs">
             <a class="btn btn-primary" href="/signup" type="button">Register</a>
-            <button class="btn btn-primary" (click)="logUserIn()" type="button">Login</button>
+            <button class="btn btn-primary">Login</button>
         </div>
     </form>
 </div>
