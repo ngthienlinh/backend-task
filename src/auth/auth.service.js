@@ -14,7 +14,7 @@ exports.encodePassword = (password, salt) => {
     let pass = cryptoJS.PBKDF2(password, salt, {
         keySize: 64,
         iterations: 1000
-    });
+    })
 
     return pass.toString(cryptoJS.enc.Hex)
 }
@@ -27,15 +27,15 @@ exports.passportSetup = () => {
                 id: user.id,
                 userId: user.userId,
                 username: user.name
-            });
-        });
-    });
+            })
+        })
+    })
 
     passport.deserializeUser(function (user, cb) {
         process.nextTick(function () {
             return cb(null, user);
-        });
-    });
+        })
+    })
 
     passport.use(new LocalStrategy({ passReqToCallback: true },
         async (req, username, password, done) => {

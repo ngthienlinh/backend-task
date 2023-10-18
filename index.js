@@ -45,16 +45,16 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: { secure: true }
-}));
+}))
 
 app.use(express.static('app'))
 
 app.use('/auth', require('./src/auth'))
 
 // authenticate all routes after /auth
-app.use(passport.session());
+app.use(passport.session())
 
-require('./src/routes')(app);
+require('./src/routes')(app)
 
 const port = process.env.PORT || 3000
 
