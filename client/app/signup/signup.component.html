@@ -1,1 +1,21 @@
-<p>signup works!</p>
+<div class="d-flex justify-content-center align-items-center mt-5">
+    <form class="d-inline-block mx-auto p-4 shadow rounded" id="frmLogin">
+        <h4 class="text-center">Register</h4>
+        <div class="form-group">
+            <label for="userName">Name</label>
+            <input type="text" name="userName" id="userName" class="form-control" [(ngModel)]="userName" />
+        </div>
+        <div class="form-group">
+            <label for="userId">Email</label>
+            <input type="text" name="userId" id="userId" class="form-control" [(ngModel)]="userId" />
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" class="form-control" [(ngModel)]="password" />
+        </div>
+
+        <div class="text-center mt-3 d-flex justify-content-center gap-xs">
+            <button class="btn btn-primary" (click)="register()" type="button">Register</button>
+        </div>
+    </form>
+</div>
