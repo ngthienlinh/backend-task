@@ -5,8 +5,11 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 const session = require('express-session')
 const passport = require('passport')
+const path = require('path')
 const app = express()
 require('dotenv').config()
+
+const root = path.normalize(__dirname + '/..')
 
 const cspDefaults = helmet.contentSecurityPolicy.getDefaultDirectives();
 delete cspDefaults['upgrade-insecure-requests'];
@@ -51,14 +54,19 @@ app.use(session({
 }))
 
 // Serve static data in app folder
-app.use(express.static('app'))
+app.use(express.static(path.join(root, 'client/dist'), {
+    setHeaders: (res, path) => {
+        // Custom Cache-Control for HTML files, let client cache assets resources for 1 day
+        res.setHeader('Cache-Control', 'max-age=86400')
+    }
+}))
 
-app.use('/auth', require('./src/auth'))
+app.use('/auth', require('./auth'))
 
 // Authenticate all routes after /auth
 app.use(passport.session())
 
-require('./src/routes')(app)
+require('./routes')(app)
 
 const port = process.env.PORT || 3000
 

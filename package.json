@@ -4,8 +4,16 @@
     "description": "test back end",
     "main": "index.js",
     "scripts": {
-        "dev": "node index.js",
-        "test": "jest"
+        "start-server": "node server/index.js",
+        "test-server": "jest",
+        "start": "ng serve",
+        "build": "ng build",
+        "deploy": "ng build --configuration=production",
+        "local": "ng build --configuration=development",
+        "test": "ng test",
+        "lint": "ng lint",
+        "e2e": "ng e2e",
+        "postinstall": "ngcc"
     },
     "prisma": {
         "seed": "node prisma/seed.js"
@@ -22,6 +30,17 @@
     "author": "ngthienlinh",
     "license": "ISC",
     "dependencies": {
+        "@angular/animations": "^16.2.0",
+        "@angular/common": "^16.2.0",
+        "@angular/compiler": "^16.2.0",
+        "@angular/core": "^16.2.0",
+        "@angular/forms": "^16.2.0",
+        "@angular/platform-browser": "^16.2.0",
+        "@angular/platform-browser-dynamic": "^16.2.0",
+        "@angular/router": "^16.2.0",
+        "rxjs": "~7.8.0",
+        "tslib": "^2.3.0",
+        "zone.js": "~0.13.0",
         "@prisma/client": "^5.4.1",
         "body-parser": "^1.20.2",
         "compression": "^1.7.4",
@@ -39,9 +58,13 @@
         "passport-local": "^1.0.0"
     },
     "devDependencies": {
+        "@angular-devkit/build-angular": "^16.2.6",
+        "@angular/cli": "^16.2.6",
+        "@angular/compiler-cli": "^16.2.0",
         "cross-env": "^7.0.3",
         "jest": "^29.7.0",
         "prisma": "^5.4.1",
-        "supertest": "^6.3.3"
+        "supertest": "^6.3.3",
+        "typescript": "~5.1.3"
     }
 }
