@@ -6,25 +6,7 @@ const bodyParser = require('body-parser')
 const session = require('express-session')
 const passport = require('passport')
 const app = express()
-const fs = require('fs/promises')
-const path = require('path')
 require('dotenv').config()
-
-passport.serializeUser(function (user, cb) {
-    process.nextTick(function () {
-        return cb(null, {
-            id: user.id,
-            userId: user.userId,
-            username: user.name
-        });
-    });
-});
-
-passport.deserializeUser(function (user, cb) {
-    process.nextTick(function () {
-        return cb(null, user);
-    });
-});
 
 const cspDefaults = helmet.contentSecurityPolicy.getDefaultDirectives();
 delete cspDefaults['upgrade-insecure-requests'];
