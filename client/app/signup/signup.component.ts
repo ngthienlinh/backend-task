@@ -6,9 +6,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./signup.component.css']
 })
 export class SignupComponent {
-  userName = ''
-  userId = ''
-  password = ''
+  user = {
+    name: '',
+    userId: '',
+    password: '',
+    repassword: ''
+  }
 
   register() {
 

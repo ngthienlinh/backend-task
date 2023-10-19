@@ -1,21 +1,36 @@
 <div class="d-flex justify-content-center align-items-center mt-5">
-    <form class="d-inline-block mx-auto p-4 shadow rounded" id="frmLogin">
+    <form class="d-inline-block mx-auto p-4 shadow rounded" id="frmReg" #frmReg="ngForm" (ngSubmit)="register()">
         <h4 class="text-center">Register</h4>
-        <div class="form-group">
+
+        <div class="form-group mt-3">
             <label for="userName">Name</label>
-            <input type="text" name="userName" id="userName" class="form-control" [(ngModel)]="userName" />
-        </div>
-        <div class="form-group">
-            <label for="userId">Email</label>
-            <input type="text" name="userId" id="userId" class="form-control" [(ngModel)]="userId" />
-        </div>
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" name="password" id="password" class="form-control" [(ngModel)]="password" />
+            <input type="text" name="userName" id="userName" class="form-control" [(ngModel)]="user.name" required minlength="2" />
         </div>
 
-        <div class="text-center mt-3 d-flex justify-content-center gap-xs">
-            <button class="btn btn-primary" (click)="register()" type="button">Register</button>
+        <div class="form-group mt-3">
+            <label for="userId">Email</label>
+            <input type="text" name="userId" id="userId" class="form-control" #userId="ngModel" [(ngModel)]="user.userId" required pattern='^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$' />
+            <div *ngIf="userId.invalid && (userId.dirty || userId.touched)">
+                <p *ngIf="userId.errors?.['required']" class="label label-danger text-danger">Email is required</p>
+                <p *ngIf="userId.errors?.['pattern']" class="label label-danger text-danger">
+                    Invalid email.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group mt-3">
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" class="form-control" [(ngModel)]="user.password" required minlength="8" pattern="^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,}$" />
+        </div>
+
+        <div class="form-group mt-3">
+            <label for="password">Re-Password</label>
+            <input type="password" name="password" id="password" class="form-control" [(ngModel)]="user.repassword" required minlength="8" pattern="^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,}$" />
+        </div>
+
+        <div class="text-center mt-3">
+            <button class="btn btn-primary" [disabled]="frmReg.invalid">Register</button>
+            <div class="mt-1"><a href="/">Already have an account</a></div>
         </div>
     </form>
 </div>

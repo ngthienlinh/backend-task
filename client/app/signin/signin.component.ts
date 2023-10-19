@@ -7,10 +7,13 @@ import { Component } from '@angular/core';
 })
 export class SigninComponent {
 
-  userId = ''
-  password = ''
+  user = {
+    userId: '',
+    password: ''
+  }
+  processing = false
 
   logUserIn() {
-
+    this.processing = !this.processing
   }
 }
