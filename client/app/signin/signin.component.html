@@ -18,13 +18,10 @@
         <div class="form-group mt-3">
             <label for="password">Password</label>
             <input type="password" name="password" id="password" class="form-control" #password="ngModel"
-                [(ngModel)]="user.password" required minlength="8" pattern="^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,}$" />
+                [(ngModel)]="user.password" required />
 
             <div *ngIf="password.invalid && (password.dirty || password.touched)">
                 <p *ngIf="password.errors?.['required']" class="label label-danger text-danger">Password is required</p>
-                <p *ngIf="password.errors?.['pattern']" class="label label-danger text-danger">
-                    Password must have at least 8 characters with at least one number, one upper charecter, one lower charecter and one special character
-                </p>
             </div>
         </div>
 
