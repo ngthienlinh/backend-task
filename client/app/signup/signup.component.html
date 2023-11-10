@@ -20,17 +20,26 @@
 
         <div class="form-group mt-3">
             <label for="password">Password</label>
-            <input type="password" name="password" id="password" class="form-control" [(ngModel)]="user.password" required minlength="8" pattern="^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,}$" />
+            <input type="password" name="password" id="password" class="form-control" #pass="ngModel" [(ngModel)]="user.password" required minlength="8" maxlength="20" pattern="^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,}$" />
+
+            <div *ngIf="pass.invalid && (pass.dirty || pass.touched)">
+                <p *ngIf="pass.errors?.['required']" class="label label-danger text-danger">Password is required</p>
+                <p *ngIf="pass.errors?.['minlength']" class="label label-danger text-danger">Password must have at least 8 charaters</p>
+                <p *ngIf="pass.errors?.['pattern']" class="label label-danger text-danger">
+                    Password must have at least one lower charater, one upper charater, one special charater
+                </p>
+            </div>
         </div>
 
         <div class="form-group mt-3">
-            <label for="password">Re-Password</label>
-            <input type="password" name="password" id="password" class="form-control" [(ngModel)]="user.repassword" required minlength="8" pattern="^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,}$" />
+            <label for="repassword">Re-Password</label>
+            <input type="password" name="repassword" id="repassword" class="form-control" [(ngModel)]="user.repassword" required minlength="8" pattern="^(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z]).{8,}$" />
         </div>
 
         <div class="text-center mt-3">
-            <button class="btn btn-primary" [disabled]="frmReg.invalid">Register</button>
+            <button class="btn btn-primary" [disabled]="frmReg.invalid || processing">Register <fa-icon [spin]="true" [icon]="faSpinner"></fa-icon></button>
             <div class="mt-1"><a href="/">Already have an account</a></div>
+            <div>Or continue with <a href="/"><fa-icon [icon]="faGoogle"></fa-icon></a></div>
         </div>
     </form>
 </div>

@@ -4,33 +4,27 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 enum Role {
-    USER
-    ADMIN
+  USER
+  ADMIN
 }
 
 model User {
-    id        Int      @id @default(autoincrement())
-    name      String
-    userId    String   @unique
-    salt      String
-    password  String
-    role      Role     @default(USER)
-    createdAt DateTime @default(now())
-    quotes    Quote[]
-}
-
-model Quote {
-    id       Int    @id @default(autoincrement())
-    quote    String @unique
-    author   User   @relation(fields: [authorId], references: [id])
-    authorId Int
+  id        Int      @id @default(autoincrement())
+  name      String
+  userId    String   @unique
+  salt      String
+  password  String
+  active    Boolean
+  validated Boolean
+  role      Role     @default(USER)
+  createdAt DateTime @default(now())
 }

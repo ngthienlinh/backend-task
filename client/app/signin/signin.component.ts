@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthService } from 'client/services/auth.service';
 
 @Component({
   selector: 'app-signin',
@@ -13,7 +14,13 @@ export class SigninComponent {
   }
   processing = false
 
+  constructor(private authSvc: AuthService) {
+  }
+
   logUserIn() {
-    this.processing = !this.processing
+    this.processing = true
+    this.authSvc.signin(this.user.userId, this.user.password).subscribe(() => {
+
+    }).add(() => this.processing = false)
   }
 }

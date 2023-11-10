@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { faGoogle } from '@fortawesome/free-brands-svg-icons';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { AuthService } from 'client/services/auth.service';
 
 @Component({
   selector: 'app-signup',
@@ -6,6 +9,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./signup.component.css']
 })
 export class SignupComponent {
+  faGoogle = faGoogle
+  faSpinner = faSpinner
+  processing = false
   user = {
     name: '',
     userId: '',
@@ -13,7 +19,16 @@ export class SignupComponent {
     repassword: ''
   }
 
-  register() {
+  /**
+   *
+   */
+  constructor(private authSvc: AuthService) {
+  }
 
+  register() {
+    this.processing = true
+    this.authSvc.signup(this.user.name, this.user.userId, this.user.password).subscribe(() => {
+
+    }).add(() => this.processing = false)
   }
 }
