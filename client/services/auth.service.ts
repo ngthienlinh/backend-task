@@ -15,16 +15,16 @@ export class AuthService {
   constructor(private http: HttpClient) {
   }
 
-  signup(username: string, email: string, password: string) {
-    return this.http.post(`/auth/signup`, { username, email, password }).pipe(map(user => {
+  signup(name: string, userId: string, password: string) {
+    return this.http.post(`/auth/signup`, { name, userId, password }).pipe(map(user => {
       if (user && user.token) {
         this.isAuthenticatedSubject.next(true)
       }
     }));
   }
 
-  signin(email: string, password: string) {
-    return this.http.post<any>(`/auth/signin`, { email, password })
+  signin(userId: string, password: string) {
+    return this.http.post<any>(`/auth/signin`, { userId, password })
       .pipe(map(user => {
         if (user && user.token) {
           this.isAuthenticatedSubject.next(true)
