@@ -16,24 +16,31 @@ router.post('/signin', passport.authenticate('local', { failWithError: true }), 
 })
 
 router.post('/signup', validateNewUser(), async (req, res) => {
-  let user = await prisma.user.findUnique({ where: { userId: req.body.userId } })
-  if (user) {
-    return res.status(400).json({ msg: 'This email is already in used.' })
-  }
-
-  let salt = generateSalt()
-  let pass = encodePassword(req.body.password, salt)
-
-  await prisma.user.create({
-    data: {
-      userId: req.body.userId,
-      name: req.body.name,
-      salt: salt,
-      password: pass
+  try {
+    let user = await prisma.user.findUnique({ where: { userId: req.body.userId } })
+    if (user) {
+      return res.status(400).json({ msg: 'This email is already in used.' })
     }
-  })
 
-  res.json({ userId: req.body.userId })
+    let salt = generateSalt()
+    let pass = encodePassword(req.body.password, salt)
+
+    await prisma.user.create({
+      data: {
+        userId: req.body.userId,
+        name: req.body.name,
+        salt: salt,
+        password: pass,
+        active: true,
+        validated: false
+      }
+    })
+
+    res.json({ userId: req.body.userId })
+  } catch (ex) {
+    console.log(ex)
+    res.sendStatus(500)
+  }
 })
 
 router.post('/signout', (req, res) => {

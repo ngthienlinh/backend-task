@@ -16,7 +16,7 @@ export class AuthService {
   }
 
   signup(name: string, userId: string, password: string) {
-    return this.http.post(`/auth/signup`, { name, userId, password }).pipe(map(user => {
+    return this.http.post(`http://localhost:3001/auth/signup`, { name, userId, password }).pipe(map((user: any) => {
       if (user && user.token) {
         this.isAuthenticatedSubject.next(true)
       }
@@ -24,7 +24,7 @@ export class AuthService {
   }
 
   signin(userId: string, password: string) {
-    return this.http.post<any>(`/auth/signin`, { userId, password })
+    return this.http.post<any>(`http://localhost:3001/auth/signin`, { userId, password })
       .pipe(map(user => {
         if (user && user.token) {
           this.isAuthenticatedSubject.next(true)
@@ -32,9 +32,9 @@ export class AuthService {
       }));
   }
 
-  signout(data) {
+  signout(data: any) {
     this.isAuthenticatedSubject.next(false)
-    return this.http.post<any>(`/auth/signout`, data)
+    return this.http.post<any>(`http://localhost:3001/auth/signout`, data)
   }
 
 }

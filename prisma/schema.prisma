@@ -23,8 +23,8 @@ model User {
   userId    String   @unique
   salt      String
   password  String
-  active    Boolean
-  validated Boolean
+  active    Boolean  @default(true)
+  validated Boolean  @default(false)
   role      Role     @default(USER)
   createdAt DateTime @default(now())
 }

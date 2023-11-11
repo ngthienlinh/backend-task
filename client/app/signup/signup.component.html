@@ -37,7 +37,7 @@
         </div>
 
         <div class="text-center mt-3">
-            <button class="btn btn-primary" [disabled]="frmReg.invalid || processing">Register <fa-icon [spin]="true" [icon]="faSpinner"></fa-icon></button>
+            <button class="btn btn-primary" [disabled]="frmReg.invalid || processing">Register <fa-icon *ngIf="processing" [spin]="true" [icon]="faSpinner"></fa-icon></button>
             <div class="mt-1"><a href="/">Already have an account</a></div>
             <div>Or continue with <a href="/"><fa-icon [icon]="faGoogle"></fa-icon></a></div>
         </div>
