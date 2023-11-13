@@ -15,16 +15,16 @@ export class AuthService {
   constructor(private http: HttpClient) {
   }
 
-  signup(name: string, userId: string, password: string) {
-    return this.http.post(`http://localhost:3001/auth/signup`, { name, userId, password }).pipe(map((user: any) => {
+  signup(name: string, email: string, password: string) {
+    return this.http.post(`http://localhost:3001/auth/signup`, { name, email, password }).pipe(map((user: any) => {
       if (user && user.token) {
         this.isAuthenticatedSubject.next(true)
       }
     }));
   }
 
-  signin(userId: string, password: string) {
-    return this.http.post<any>(`http://localhost:3001/auth/signin`, { userId, password })
+  signin(email: string, password: string) {
+    return this.http.post<any>(`http://localhost:3001/auth/signin`, { email, password })
       .pipe(map(user => {
         if (user && user.token) {
           this.isAuthenticatedSubject.next(true)

@@ -8,11 +8,11 @@
         </div>
 
         <div class="form-group mt-3">
-            <label for="userId">Email</label>
-            <input type="text" name="userId" id="userId" class="form-control" #userId="ngModel" [(ngModel)]="user.userId" required pattern='^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$' />
-            <div *ngIf="userId.invalid && (userId.dirty || userId.touched)">
-                <p *ngIf="userId.errors?.['required']" class="label label-danger text-danger">Email is required</p>
-                <p *ngIf="userId.errors?.['pattern']" class="label label-danger text-danger">
+            <label for="email">Email</label>
+            <input type="text" name="email" id="email" class="form-control" #email="ngModel" [(ngModel)]="user.email" required pattern='^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$' />
+            <div *ngIf="email.invalid && (email.dirty || email.touched)">
+                <p *ngIf="email.errors?.['required']" class="label label-danger text-danger">Email is required</p>
+                <p *ngIf="email.errors?.['pattern']" class="label label-danger text-danger">
                     Invalid email.
                 </p>
             </div>

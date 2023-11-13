@@ -15,7 +15,7 @@ export class SignupComponent {
   processing = false
   user = {
     name: '',
-    userId: '',
+    email: '',
     password: '',
     repassword: ''
   }
@@ -28,7 +28,7 @@ export class SignupComponent {
 
   register() {
     this.processing = true
-    this.authSvc.signup(this.user.name, this.user.userId, this.user.password).subscribe(() => {
+    this.authSvc.signup(this.user.name, this.user.email, this.user.password).subscribe(() => {
       this.router.navigate(['/dashboard'])
     }).add(() => this.processing = false)
   }

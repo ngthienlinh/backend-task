@@ -3,13 +3,13 @@
         <h4 class="text-center">Login</h4>
 
         <div class="form-group mt-3">
-            <label for="userId">Email</label>
-            <input type="text" name="userId" id="userId" #userId="ngModel" class="form-control" [(ngModel)]="user.userId" required
+            <label for="email">Email</label>
+            <input type="text" name="email" id="email" #email="ngModel" class="form-control" [(ngModel)]="user.email" required
                 pattern='^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$' />
 
-            <div *ngIf="userId.invalid && (userId.dirty || userId.touched)">
-                <p *ngIf="userId.errors?.['required']" class="label label-danger text-danger">Email is required</p>
-                <p *ngIf="userId.errors?.['pattern']" class="label label-danger text-danger">
+            <div *ngIf="email.invalid && (email.dirty || email.touched)">
+                <p *ngIf="email.errors?.['required']" class="label label-danger text-danger">Email is required</p>
+                <p *ngIf="email.errors?.['pattern']" class="label label-danger text-danger">
                     Invalid email
                 </p>
             </div>

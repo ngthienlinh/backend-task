@@ -10,7 +10,7 @@ import { AuthService } from 'client/services/auth.service';
 export class SigninComponent {
 
   user = {
-    userId: '',
+    email: '',
     password: ''
   }
   processing = false
@@ -20,7 +20,7 @@ export class SigninComponent {
 
   logUserIn() {
     this.processing = true
-    this.authSvc.signin(this.user.userId, this.user.password).subscribe(() => {
+    this.authSvc.signin(this.user.email, this.user.password).subscribe(() => {
       this.router.navigate(['/dashboard'])
     }).add(() => this.processing = false)
   }
