@@ -18,16 +18,15 @@ enum Role {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   name      String
-  email     String    @unique
+  email     String   @unique
   salt      String
   password  String
-  active    Boolean   @default(true)
-  validated Boolean   @default(false)
-  role      Role      @default(USER)
-  createdAt DateTime  @default(now())
-  Session   Session[]
+  active    Boolean  @default(true)
+  validated Boolean  @default(false)
+  role      Role     @default(USER)
+  createdAt DateTime @default(now())
 }
 
 model Session {
@@ -36,6 +35,5 @@ model Session {
   data      String
   expiresAt DateTime
   createdAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id])
-  userId    Int
+  userId    Int?
 }

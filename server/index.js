@@ -12,18 +12,8 @@ require('dotenv').config()
 
 const root = path.normalize(__dirname + '/..')
 
-const cspDefaults = helmet.contentSecurityPolicy.getDefaultDirectives();
-delete cspDefaults['upgrade-insecure-requests'];
-cspDefaults['script-src'] = ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net", "https://code.jquery.com"]
-cspDefaults['script-src-attr'] = ["'unsafe-inline'"]
-
 // Basic secure for server
-app.use(helmet({
-  contentSecurityPolicy: {
-    useDefaults: false,
-    directives: { ...cspDefaults }
-  }
-}))
+app.use(helmet())
 
 // Compress response bodies
 app.use(compression())
@@ -50,7 +40,7 @@ app.use(cors({
 app.use(session({
   secret: process.env.SESSION_SECRET || '5pring',
   resave: true,
-  saveUninitialized: true,
+  saveUninitialized: false,
   cookie: { secure: true },
   store: new PrismaSessionStore(
     new PrismaClient(),

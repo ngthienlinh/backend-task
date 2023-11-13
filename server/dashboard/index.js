@@ -6,6 +6,6 @@ const auth = require('../auth/auth.service')
 
 const router = express.Router()
 
-router.get('/quotes', auth.isAuthenticated(), controller.findSessions)
+router.get('/sessions', auth.isAuthenticated(), controller.findSessions)
 
 module.exports = router

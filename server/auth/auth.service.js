@@ -37,22 +37,22 @@ exports.passportSetup = () => {
     })
   })
 
-  passport.use(new LocalStrategy({ passReqToCallback: true },
-    async (req, username, password, done) => {
-      let user = await prisma.user.findUnique({ where: { email: username } })
-      if (user) {
-        try {
+  passport.use(new LocalStrategy({ usernameField: 'email', passReqToCallback: true },
+    async (req, email, password, done) => {
+      try {
+        let user = await prisma.user.findUnique({ where: { email: email } })
+        if (user) {
           let pass = this.encodePassword(password, user.salt)
 
           if (user.password === pass) {
             return done(null, { id: user.id, name: user.name, email: user.email })
           }
-        } catch (ex) {
-          console.log(ex)
-          return done(null, false, { msg: 'Fail to authenticate user' })
         }
+        return done(null, false, { msg: 'Email / phone number / password combination is incorrect. Please try again.' })
+      } catch (ex) {
+        console.log(ex)
+        return done(ex)
       }
-      return done(null, false, { msg: 'Email / phone number / password combination is incorrect. Please try again.' })
     }
   ))
 

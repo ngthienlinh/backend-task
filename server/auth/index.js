@@ -9,7 +9,7 @@ passportSetup()
 
 const router = express.Router()
 
-router.post('/signin', passport.authenticate('local', { failWithError: true }), (req, res, next) => {
+router.post('/signin', passport.authenticate('local', { failWithError: true, failureRedirect: '/' }), (req, res, next) => {
   // regenerate the session, which is good practice to help
   // guard against forms of session fixation
   req.session.regenerate(function (err) {
@@ -23,7 +23,7 @@ router.post('/signin', passport.authenticate('local', { failWithError: true }), 
     req.session.save(function (err) {
       if (err) return next(err)
 
-      res.redirect('/dashboard');
+      res.json('ok')
     })
   })
 }, (err, req, res, next) => {
@@ -59,20 +59,11 @@ router.post('/signup', validateNewUser(), async (req, res) => {
 })
 
 router.post('/signout', (req, res) => {
-  // clear the user from the session object and save.
-  // this will ensure that re-using the old session id
-  // does not have a logged in user
-  req.session.userId = null
-  req.session.save(function (err) {
-    if (err) next(err)
+  req.logout(function (err) {
+    if (err) { return next(err); }
 
-    // regenerate the session, which is good practice to help
-    // guard against forms of session fixation
-    req.session.regenerate(function (err) {
-      if (err) next(err)
-      res.redirect('/')
-    })
-  })
+    res.redirect('/');
+  });
 }, (err, req, res, next) => {
   res.sendStatus(404)
 })

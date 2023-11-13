@@ -12,7 +12,7 @@ const isAuthenticated: CanMatchFn = () => {
     take(1),
     tap((isAuthenticated: boolean) => {
       if (!isAuthenticated) {
-        router.navigate(['/account/login'])
+        router.navigate(['/'])
       }
     })
   )
