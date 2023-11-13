@@ -25,8 +25,8 @@ exports.passportSetup = () => {
     process.nextTick(function () {
       return cb(null, {
         id: user.id,
-        userId: user.userId,
-        username: user.name
+        email: user.email,
+        name: user.name
       })
     })
   })
@@ -39,14 +39,13 @@ exports.passportSetup = () => {
 
   passport.use(new LocalStrategy({ passReqToCallback: true },
     async (req, username, password, done) => {
-      let user = await prisma.user.findUnique({ where: { userId: username } })
+      let user = await prisma.user.findUnique({ where: { email: username } })
       if (user) {
         try {
-
           let pass = this.encodePassword(password, user.salt)
 
           if (user.password === pass) {
-            return done(null, { name: user.name, userId: user.userId })
+            return done(null, { id: user.id, name: user.name, email: user.email })
           }
         } catch (ex) {
           console.log(ex)

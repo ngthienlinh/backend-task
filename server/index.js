@@ -4,6 +4,8 @@ const compression = require('compression')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const session = require('express-session')
+const { PrismaSessionStore } = require('@quixo3/prisma-session-store');
+const { PrismaClient } = require('@prisma/client');
 const path = require('path')
 const app = express()
 require('dotenv').config()
@@ -47,9 +49,17 @@ app.use(cors({
 
 app.use(session({
   secret: process.env.SESSION_SECRET || '5pring',
-  resave: false,
-  saveUninitialized: false,
-  cookie: { secure: true }
+  resave: true,
+  saveUninitialized: true,
+  cookie: { secure: true },
+  store: new PrismaSessionStore(
+    new PrismaClient(),
+    {
+      checkPeriod: 2 * 60 * 1000,  //ms
+      dbRecordIdIsSessionId: true,
+      dbRecordIdFunction: undefined,
+    }
+  )
 }))
 
 app.use('/auth', require('./auth'))

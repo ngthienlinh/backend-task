@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { AuthService } from 'client/services/auth.service';
@@ -22,13 +23,13 @@ export class SignupComponent {
   /**
    *
    */
-  constructor(private authSvc: AuthService) {
+  constructor(private authSvc: AuthService, private router: Router) {
   }
 
   register() {
     this.processing = true
     this.authSvc.signup(this.user.name, this.user.userId, this.user.password).subscribe(() => {
-
+      this.router.navigate(['/dashboard'])
     }).add(() => this.processing = false)
   }
 }

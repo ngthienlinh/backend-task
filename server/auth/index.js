@@ -9,15 +9,30 @@ passportSetup()
 
 const router = express.Router()
 
-router.post('/signin', passport.authenticate('local', { failWithError: true }), (req, res) => {
-  res.redirect('http://localhost:3001/dashboard.html');
+router.post('/signin', passport.authenticate('local', { failWithError: true }), (req, res, next) => {
+  // regenerate the session, which is good practice to help
+  // guard against forms of session fixation
+  req.session.regenerate(function (err) {
+    if (err) next(err)
+
+    // store user information in session, typically a user id
+    req.session.userId = req.user.id
+
+    // save the session before redirection to ensure page
+    // load does not happen before session is saved
+    req.session.save(function (err) {
+      if (err) return next(err)
+
+      res.redirect('/dashboard');
+    })
+  })
 }, (err, req, res, next) => {
   res.sendStatus(404)
 })
 
 router.post('/signup', validateNewUser(), async (req, res) => {
   try {
-    let user = await prisma.user.findUnique({ where: { userId: req.body.userId } })
+    let user = await prisma.user.findUnique({ where: { email: req.body.email } })
     if (user) {
       return res.status(400).json({ msg: 'This email is already in used.' })
     }
@@ -27,7 +42,7 @@ router.post('/signup', validateNewUser(), async (req, res) => {
 
     await prisma.user.create({
       data: {
-        userId: req.body.userId,
+        email: req.body.email,
         name: req.body.name,
         salt: salt,
         password: pass,
@@ -36,7 +51,7 @@ router.post('/signup', validateNewUser(), async (req, res) => {
       }
     })
 
-    res.json({ userId: req.body.userId })
+    res.json({ email: req.body.email })
   } catch (ex) {
     console.log(ex)
     res.sendStatus(500)
@@ -44,7 +59,20 @@ router.post('/signup', validateNewUser(), async (req, res) => {
 })
 
 router.post('/signout', (req, res) => {
-  res.redirect('/');
+  // clear the user from the session object and save.
+  // this will ensure that re-using the old session id
+  // does not have a logged in user
+  req.session.user = null
+  req.session.save(function (err) {
+    if (err) next(err)
+
+    // regenerate the session, which is good practice to help
+    // guard against forms of session fixation
+    req.session.regenerate(function (err) {
+      if (err) next(err)
+      res.redirect('/')
+    })
+  })
 }, (err, req, res, next) => {
   res.sendStatus(404)
 })

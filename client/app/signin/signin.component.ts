@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from 'client/services/auth.service';
 
 @Component({
@@ -14,13 +15,13 @@ export class SigninComponent {
   }
   processing = false
 
-  constructor(private authSvc: AuthService) {
+  constructor(private authSvc: AuthService, private router: Router) {
   }
 
   logUserIn() {
     this.processing = true
     this.authSvc.signin(this.user.userId, this.user.password).subscribe(() => {
-
+      this.router.navigate(['/dashboard'])
     }).add(() => this.processing = false)
   }
 }
