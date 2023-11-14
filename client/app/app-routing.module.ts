@@ -8,7 +8,7 @@ import { AuthService } from 'client/services/auth.service'
 const isAuthenticated: CanMatchFn = () => {
   const authService = inject(AuthService)
   const router = inject(Router)
-  return authService.isAuthenticated$.pipe(
+  return authService.isLoggedIn$().pipe(
     take(1),
     tap((isAuthenticated: boolean) => {
       if (!isAuthenticated) {
@@ -28,7 +28,7 @@ const routes: Routes = [
   },
   {
     path: 'dashboard',
-    canLoad: [isAuthenticated],
+    canMatch: [isAuthenticated],
     loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)
   }
 ]

@@ -9,7 +9,11 @@ passportSetup()
 
 const router = express.Router()
 
-router.post('/signin', passport.authenticate('local', { failWithError: true, failureRedirect: '/' }), (req, res, next) => {
+function onUserLoggedIn(req, res, next) {
+
+}
+
+router.post('/signin', passport.authenticate('local'), (req, res, next) => {
   // regenerate the session, which is good practice to help
   // guard against forms of session fixation
   req.session.regenerate(function (err) {
@@ -23,11 +27,9 @@ router.post('/signin', passport.authenticate('local', { failWithError: true, fai
     req.session.save(function (err) {
       if (err) return next(err)
 
-      res.json('ok')
+      res.json(req.user)
     })
   })
-}, (err, req, res, next) => {
-  res.sendStatus(404)
 })
 
 router.post('/signup', validateNewUser(), async (req, res) => {
@@ -49,6 +51,24 @@ router.post('/signup', validateNewUser(), async (req, res) => {
         active: true,
         validated: false
       }
+    })
+
+    // Log user in after registration
+    passport.authenticate('local')(req, res, function () {
+      req.session.regenerate(function (err) {
+        if (err) next(err)
+
+        // store user information in session, typically a user id
+        req.session.userId = req.user.id
+
+        // save the session before redirection to ensure page
+        // load does not happen before session is saved
+        req.session.save(function (err) {
+          if (err) return next(err)
+
+          res.json(req.user)
+        })
+      })
     })
 
     res.json({ email: req.body.email })

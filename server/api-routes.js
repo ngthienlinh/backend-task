@@ -8,4 +8,5 @@ module.exports = (app) => {
   })
 
   app.use('/api/dashboard', require('./dashboard'))
+  app.use('/api/user', require('./user'))
 }

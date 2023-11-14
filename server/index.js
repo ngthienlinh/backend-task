@@ -34,7 +34,8 @@ app.use(cors({
   allowedHeaders: "Origin,X-Requested-With,Content-Type,Accept,Authorization,,Access-Control-Request-Headers,x-http-method-override,Accept-Ranges",
   exposedHeaders: "Content-Disposition",
   maxAge: 1800,
-  preflightContinue: false
+  preflightContinue: false,
+  credentials: true
 }))
 
 app.use(session({

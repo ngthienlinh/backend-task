@@ -1,13 +1,12 @@
 import { Injectable } from "@angular/core"
-import { BehaviorSubject, Observable, map } from "rxjs"
+import { BehaviorSubject, Observable, catchError, map, of, tap } from "rxjs"
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  isAuthenticatedSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false)
-  isAuthenticated$: Observable<boolean> = this.isAuthenticatedSubject.asObservable()
+  loggedUser: any;
 
   /**
    *
@@ -17,24 +16,35 @@ export class AuthService {
 
   signup(name: string, email: string, password: string) {
     return this.http.post(`http://localhost:3001/auth/signup`, { name, email, password }).pipe(map((user: any) => {
-      if (user && user.token) {
-        this.isAuthenticatedSubject.next(true)
-      }
+      this.loggedUser = user
     }));
   }
 
   signin(email: string, password: string) {
     return this.http.post<any>(`http://localhost:3001/auth/signin`, { email, password })
       .pipe(map(user => {
-        if (user && user.token) {
-          this.isAuthenticatedSubject.next(true)
-        }
+        this.loggedUser = user
       }));
   }
 
   signout(data: any) {
-    this.isAuthenticatedSubject.next(false)
-    return this.http.post<any>(`http://localhost:3001/auth/signout`, data)
+    this.loggedUser = null
+    return this.http.post<any>(`http://localhost:3001/auth/signout`, data).pipe(tap(() => this.loggedUser = null));
+  }
+
+  getCurrentUser(): Observable<any> {
+    if (this.loggedUser) {
+      return of(this.loggedUser);
+    } else {
+      return this.http.get<any>(`http://localhost:3001/api/user`).pipe(tap(user => this.loggedUser = user))
+    }
+  }
+
+  isLoggedIn$(): Observable<boolean> {
+    return this.getCurrentUser().pipe(
+      map(user => !!user),
+      catchError(() => of(false))
+    );
   }
 
 }

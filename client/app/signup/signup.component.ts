@@ -24,6 +24,9 @@ export class SignupComponent {
    *
    */
   constructor(private authSvc: AuthService, private router: Router) {
+    this.authSvc.isLoggedIn$().subscribe(() => {
+      this.router.navigate(['/dashboard'])
+    })
   }
 
   register() {

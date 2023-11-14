@@ -48,7 +48,7 @@ exports.passportSetup = () => {
             return done(null, { id: user.id, name: user.name, email: user.email })
           }
         }
-        return done(null, false, { msg: 'Email / phone number / password combination is incorrect. Please try again.' })
+        return done(null, false, { msg: 'Email and password combination is incorrect. Please try again.' })
       } catch (ex) {
         console.log(ex)
         return done(ex)
