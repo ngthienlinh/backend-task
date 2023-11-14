@@ -81,7 +81,7 @@ router.post('/signup', validateNewUser(), async (req, res) => {
   }
 })
 
-router.get('/signout', (req, res) => {
+router.get('/signout', (req, res, next) => {
   req.logout(function (err) {
     if (err) { return next(err); }
 
