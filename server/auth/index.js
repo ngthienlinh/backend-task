@@ -7,23 +7,7 @@ const { generateSalt, encodePassword } = require('./auth.service')
 const router = express.Router()
 
 router.post('/signin', passport.authenticate('local'), (req, res, next) => {
-  // regenerate the session, which is good practice to help
-  // guard against forms of session fixation
-  // req.session.regenerate(function (err) {
-  //   if (err) next(err)
-
-  //   // store user information in session, typically a user id
-  //   req.session.userId = req.user.id
-  //   req.session.user = req.user
-
-  //   // save the session before redirection to ensure page
-  //   // load does not happen before session is saved
-  //   req.session.save(function (err) {
-  //     if (err) return next(err)
-
-  //     res.json(req.user)
-  //   })
-  // })
+  // we need to call req.login to complete passport login process
   req.login(req.user, (err) => {
     if (err) {
       res.status(500).json({ message: 'Session save went bad.' });
