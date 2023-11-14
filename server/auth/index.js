@@ -3,33 +3,37 @@ const { PrismaClient } = require("@prisma/client")
 const prisma = new PrismaClient()
 const express = require('express')
 const { validateNewUser } = require("../validators/user")
-const { passportSetup, generateSalt, encodePassword } = require('./auth.service')
-
-passportSetup()
-
+const { generateSalt, encodePassword } = require('./auth.service')
 const router = express.Router()
-
-function onUserLoggedIn(req, res, next) {
-
-}
 
 router.post('/signin', passport.authenticate('local'), (req, res, next) => {
   // regenerate the session, which is good practice to help
   // guard against forms of session fixation
-  req.session.regenerate(function (err) {
-    if (err) next(err)
+  // req.session.regenerate(function (err) {
+  //   if (err) next(err)
 
-    // store user information in session, typically a user id
-    req.session.userId = req.user.id
+  //   // store user information in session, typically a user id
+  //   req.session.userId = req.user.id
+  //   req.session.user = req.user
 
-    // save the session before redirection to ensure page
-    // load does not happen before session is saved
+  //   // save the session before redirection to ensure page
+  //   // load does not happen before session is saved
+  //   req.session.save(function (err) {
+  //     if (err) return next(err)
+
+  //     res.json(req.user)
+  //   })
+  // })
+  req.login(req.user, (err) => {
+    if (err) {
+      res.status(500).json({ message: 'Session save went bad.' });
+      return;
+    }
+    req.session.userId = req.userId
     req.session.save(function (err) {
-      if (err) return next(err)
-
       res.json(req.user)
     })
-  })
+  });
 })
 
 router.post('/signup', validateNewUser(), async (req, res) => {
@@ -55,20 +59,19 @@ router.post('/signup', validateNewUser(), async (req, res) => {
 
     // Log user in after registration
     passport.authenticate('local')(req, res, function () {
-      req.session.regenerate(function (err) {
-        if (err) next(err)
-
-        // store user information in session, typically a user id
-        req.session.userId = req.user.id
-
-        // save the session before redirection to ensure page
-        // load does not happen before session is saved
+      req.login(req.user, (err) => {
+        if (err) {
+          res.status(500).json({ message: 'Session save went bad.' });
+          return;
+        }
+        req.session.userId = req.userId
         req.session.save(function (err) {
-          if (err) return next(err)
-
+          if (err) {
+            return res.status(500).json({ message: 'Fail to save session.' });
+          }
           res.json(req.user)
         })
-      })
+      });
     })
 
     res.json({ email: req.body.email })
@@ -78,11 +81,11 @@ router.post('/signup', validateNewUser(), async (req, res) => {
   }
 })
 
-router.post('/signout', (req, res) => {
+router.get('/signout', (req, res) => {
   req.logout(function (err) {
     if (err) { return next(err); }
 
-    res.redirect('/');
+    res.json({ msg: 'OK' });
   });
 }, (err, req, res, next) => {
   res.sendStatus(404)

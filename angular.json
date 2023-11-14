@@ -25,11 +25,18 @@
               "client/assets"
             ],
             "styles": [
+              "./node_modules/alertifyjs/build/css/alertify.min.css",
+              "./node_modules/alertifyjs/build/css/themes/default.min.css",
               "./node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
               "./node_modules/bootstrap/dist/css/bootstrap.min.css",
               "client/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/alertifyjs/build/alertify.min.js",
+            ],
+            "allowedCommonJsDependencies": [
+              "alertifyjs"
+            ]
           },
           "configurations": {
             "production": {

@@ -1,0 +1,30 @@
+<header>
+    <div class="container">
+        <div class="d-flex justify-content-between">
+            <!-- start .header-area -->
+            <nav class="navbar navbar-expand navbar-light p-0">
+
+                <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent"
+                    aria-controls="navbarContent">
+                    <fa-icon [icon]="faBars"></fa-icon>
+                </button> -->
+
+                <div class="collapse navbar-collapse" id="navbarContent">
+                    <ul class="navbar-nav gap-sm">
+                        <li class="nav-item" routerLinkActive="active" ariaCurrentWhenActive="page">
+                            <a class="nav-link p-0" routerLink="/dashboard"> Dashboard</a>
+                        </li>
+
+                        <li class="nav-item" routerLinkActive="active" ariaCurrentWhenActive="page">
+                            <a class="nav-link p-0" routerLink="/profile">Profile</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <div>
+                <button class="btn" (click)="logout()"><fa-icon [icon]="faSignOut"></fa-icon></button>
+            </div>
+        </div>
+    </div>
+</header>

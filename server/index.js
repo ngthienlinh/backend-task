@@ -2,22 +2,27 @@ const express = require("express")
 const helmet = require('helmet')
 const compression = require('compression')
 const cors = require('cors')
+const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const session = require('express-session')
 const { PrismaSessionStore } = require('@quixo3/prisma-session-store');
 const { PrismaClient } = require('@prisma/client');
 const path = require('path')
-const app = express()
-require('dotenv').config()
+const passport = require('passport')
+const { passportSetup } = require('./auth/auth.service')
 
+require('dotenv').config()
 const root = path.normalize(__dirname + '/..')
+passportSetup()
+
+const app = express()
 
 // Basic secure for server
 app.use(helmet())
 
 // Compress response bodies
 app.use(compression())
-
+app.use(cookieParser())
 // Parse request body
 app.use(bodyParser.urlencoded({
   limit: '500kb',
@@ -31,8 +36,6 @@ app.use(cors({
   origin: process.env.NODE_ENV === 'development' ? [/^http:\/\/localhost/] : [/\.ngthienlinh\.com$/],
   optionsSuccessStatus: 200,
   methods: 'GET,PUT,POST,DELETE',
-  allowedHeaders: "Origin,X-Requested-With,Content-Type,Accept,Authorization,,Access-Control-Request-Headers,x-http-method-override,Accept-Ranges",
-  exposedHeaders: "Content-Disposition",
   maxAge: 1800,
   preflightContinue: false,
   credentials: true
@@ -42,7 +45,11 @@ app.use(session({
   secret: process.env.SESSION_SECRET || '5pring',
   resave: true,
   saveUninitialized: false,
-  cookie: { secure: true },
+  cookie: {
+    sameSite: false,
+    secure: process.env.NODE_ENV === "production",
+    maxAge: 24 * 60 * 60 * 1000
+  },
   store: new PrismaSessionStore(
     new PrismaClient(),
     {
@@ -52,6 +59,10 @@ app.use(session({
     }
   )
 }))
+
+
+app.use(passport.initialize());
+app.use(passport.session())
 
 app.use('/auth', require('./auth'))
 

@@ -2,10 +2,9 @@
 
 const express = require('express')
 const controller = require('./dashboard.controller')
-const auth = require('../auth/auth.service')
 
 const router = express.Router()
 
-router.get('/sessions', auth.isAuthenticated(), controller.findSessions)
+router.get('/sessions', controller.findSessions)
 
 module.exports = router

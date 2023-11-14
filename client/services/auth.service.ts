@@ -27,9 +27,9 @@ export class AuthService {
       }));
   }
 
-  signout(data: any) {
+  signout() {
     this.loggedUser = null
-    return this.http.post<any>(`http://localhost:3001/auth/signout`, data).pipe(tap(() => this.loggedUser = null));
+    return this.http.get<any>(`http://localhost:3001/auth/signout`).pipe(tap(() => this.loggedUser = null));
   }
 
   getCurrentUser(): Observable<any> {

@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import * as alertify from 'alertifyjs';
+import { AuthService } from 'client/services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +9,11 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Backend Task';
+
+  /**
+   *
+   */
+  constructor(public authSvc: AuthService) {
+    alertify.defaults.glossary.title = 'Message';
+  }
 }
